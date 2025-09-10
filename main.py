@@ -29,6 +29,16 @@ while True:
 
     if results.multi_hand_landmarks:
         for hand_landmarks in results.multi_hand_landmarks:
+            landmarks = hand_landmarks.landmark
+            index_finger_tip = landmarks[8]
+
+            x = int(index_finger_tip.x * w)
+            y = int(index_finger_tip.y * h)
+
+            screen_x = np.interp(x,[0,w],[0,screen_width])
+            screen_y = np.interp(y,[0,h],[0,screen_height])
+
+            pyautogui.moveTo(screen_x, screen_y)
 
             # Draws the hand landmarks
             mp_draw.draw_landmarks(img, hand_landmarks,mp_hands.HAND_CONNECTIONS)
@@ -44,7 +54,7 @@ while True:
 
 
     cv.imshow('img', img)
-    k = cv.waitKey(30) & 0xff
+    k = cv.waitKey(1) & 0xff
     if k == ord('q'):
         break 
 
